@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0d1237">
+<title>Para ti, con flores amarillas</title>
+<meta name="description" content="Una carta y un jardín de flores amarillas, hecho con mucho amor">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌻</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --noche: #0d1237;
+    --indigo: #1c2470;
+    --girasol: #ffc72c;
+    --ambar: #f59e0b;
+    --crema: #fff3c9;
+    --texto: #fbf3d6;
+    --hoja: #3f9b57;
+    --tinta: #3a2a12;
+    --serif: "Fraunces", Georgia, "Times New Roman", serif;
+    --mano: "Caveat", "Segoe Script", "Bradley Hand", cursive;
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: var(--serif);
+    font-size: 1.125rem;
+    line-height: 1.65;
+    color: var(--texto);
+    background: linear-gradient(180deg, var(--noche) 0%, #151c58 45%, var(--noche) 100%);
+    background-attachment: fixed;
+    background-color: var(--noche);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  #sky { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+  main, footer { position: relative; z-index: 1; }
+
+  section, header.hero {
+    max-width: 46rem;
+    margin: 0 auto;
+    padding: clamp(4rem, 10vw, 7rem) 1.25rem;
+    text-align: center;
+  }
+  h1, h2 { font-weight: 800; line-height: 1.12; margin: 0 0 1rem; letter-spacing: -0.01em; }
+  h1 { font-size: clamp(2.3rem, 7vw, 4.3rem); }
+  h2 { font-size: clamp(1.8rem, 5vw, 2.8rem); }
+  p { margin: 0 0 1rem; }
+  .lead { font-size: clamp(1.1rem, 2.6vw, 1.3rem); max-width: 34rem; margin-inline: auto; }
+
+  .btn {
+    font: inherit; font-weight: 600; cursor: pointer;
+    display: inline-block; text-decoration: none;
+    background: var(--girasol); color: #241a00;
+    border: 2px solid var(--girasol); border-radius: 999px;
+    padding: .8rem 1.7rem; margin-top: .6rem;
+    transition: transform .18s ease, background .18s ease;
+  }
+  .btn:hover { transform: translateY(-2px); background: #ffd75e; }
+  .btn.ghost { background: transparent; color: var(--texto); border-color: rgba(255,243,201,.45); }
+  .btn.ghost:hover { background: rgba(255,243,201,.1); }
+  .btn:focus-visible, .garden:focus-visible { outline: 3px solid var(--crema); outline-offset: 3px; }
+
+  /* ---------- Hero ---------- */
+  .hero { min-height: 100svh; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .para { font-family: var(--mano); font-size: clamp(1.9rem, 5vw, 2.6rem); color: var(--girasol); margin: 0 0 .4rem; }
+  .hero-flower { width: min(58vw, 250px); margin: .4rem auto 1.6rem; filter: drop-shadow(0 0 40px rgba(255,199,44,.45)); animation: giro 60s linear infinite; }
+  .hero-flower svg, .bloom svg, .sun svg { display: block; width: 100%; height: 100%; overflow: visible; }
+  @keyframes giro { to { transform: rotate(360deg); } }
+
+  /* ---------- Jardín ---------- */
+  #jardin { max-width: 62rem; }
+  .garden {
+    position: relative; height: clamp(360px, 62vh, 560px);
+    margin: 1.5rem auto 1rem; overflow: hidden; cursor: crosshair;
+    border-radius: 28px 28px 8px 8px;
+    border: 1px solid rgba(255,199,44,.25);
+    background: linear-gradient(180deg, rgba(255,199,44,0) 0%, rgba(255,199,44,.09) 100%);
+    touch-action: manipulation;
+  }
+  .ground {
+    position: absolute; left: 0; right: 0; bottom: 0; height: 30px; z-index: 5;
+    background: linear-gradient(180deg, #24603a, #143a24);
+    border-top: 2px solid #4fae5b;
+  }
+  .plant { position: absolute; bottom: 0; width: 0; transform-origin: 0 100%; animation: sway 4.5s ease-in-out infinite alternate; }
+  @keyframes sway { from { transform: rotate(-2.2deg); } to { transform: rotate(2.2deg); } }
+  .stem {
+    position: absolute; left: -2px; bottom: 0; width: 4px; height: 100%;
+    background: linear-gradient(180deg, #4fae5b, #2c7a3f); border-radius: 2px;
+    transform: scaleY(0); transform-origin: 50% 100%;
+    animation: crece .9s ease-out forwards;
+  }
+  .stem::before, .stem::after {
+    content: ""; position: absolute; width: 18px; height: 10px; background: var(--hoja);
+  }
+  .stem::before { left: 4px; bottom: 30%; border-radius: 0 100% 0 100%; }
+  .stem::after { right: 4px; bottom: 48%; border-radius: 100% 0 100% 0; }
+  @keyframes crece { to { transform: scaleY(1); } }
+  .bloom { position: absolute; top: 0; left: 0; transform: scale(0) rotate(-50deg); animation: abre .7s .75s cubic-bezier(.3,1.6,.5,1) forwards; }
+  @keyframes abre { to { transform: scale(1) rotate(0); } }
+  #count { font-weight: 600; color: var(--girasol); margin-bottom: .2rem; }
+  #gmsg { min-height: 1.7em; font-style: italic; opacity: .9; }
+
+  /* ---------- Carta ---------- */
+  .letter { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 1s ease; margin-top: 1.5rem; }
+  .letter.open { grid-template-rows: 1fr; }
+  .paper { overflow: hidden; min-height: 0; }
+  .paper-in {
+    background: linear-gradient(170deg, #fff8dc, var(--crema));
+    color: var(--tinta); text-align: left;
+    font-family: var(--mano); font-size: clamp(1.45rem, 4vw, 1.8rem); line-height: 1.45;
+    padding: clamp(1.4rem, 5vw, 2.6rem);
+    border-radius: 6px; border-left: 6px solid var(--ambar);
+    margin-bottom: 4px;
+  }
+  .paper-in p { margin: 0 0 1rem; }
+  .firma { text-align: right; margin-top: 1.4rem; font-weight: 700; }
+
+  /* ---------- Universo ---------- */
+  .orbit { position: relative; width: min(340px, 80vw); aspect-ratio: 1; margin: 1.5rem auto 2rem; }
+  .ring { position: absolute; border-radius: 50%; border: 1px dashed rgba(255,199,44,.4); animation: giro linear infinite; }
+  .ring i {
+    position: absolute; top: -7px; left: 50%; width: 14px; height: 14px; margin-left: -7px; border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #fff3a0, var(--girasol)); box-shadow: 0 0 14px 3px rgba(255,199,44,.6);
+  }
+  .r1 { inset: 30%; animation-duration: 9s; }
+  .r2 { inset: 15%; animation-duration: 17s; animation-direction: reverse; }
+  .r3 { inset: 0; animation-duration: 28s; }
+  .sun { position: absolute; inset: 39%; animation: giro 40s linear infinite; }
+  #hasta { min-height: 3.4em; font-size: clamp(1.25rem, 3.4vw, 1.6rem); font-weight: 600; max-width: 28rem; margin-inline: auto; }
+  #hasta.cambia { animation: aparece .5s ease; }
+  @keyframes aparece { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+  /* ---------- Pregunta ---------- */
+  .answer { display: flex; gap: 1rem; justify-content: center; align-items: center; flex-wrap: wrap; padding: 2.4rem 0 3.4rem; }
+  #no { transition: transform .25s cubic-bezier(.3,1.4,.5,1), background .18s; }
+  .final { max-width: 30rem; margin: 0 auto; animation: aparece .8s ease; }
+  .ticket {
+    background: linear-gradient(170deg, #fff8dc, var(--crema)); color: var(--tinta);
+    border: 2px dashed var(--ambar); border-radius: 14px; padding: 1.6rem 1.4rem; margin-top: 1.4rem;
+  }
+  .ticket b { display: block; font-size: 1.35rem; line-height: 1.25; margin-bottom: .6rem; }
+  .ticket .firma { font-family: var(--mano); font-size: 1.7rem; margin: .8rem 0 0; }
+
+  footer { text-align: center; padding: 2rem 1.25rem 4rem; font-family: var(--mano); font-size: 1.8rem; color: var(--girasol); }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .hero-flower, .sun, .ring, .plant { animation: none; }
+    .letter { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Degradados reutilizables para las flores -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <linearGradient id="pg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff07a"/><stop offset="1" stop-color="#ffc72c"/></linearGradient>
+    <linearGradient id="pgDark" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffc400"/><stop offset="1" stop-color="#e08a00"/></linearGradient>
+    <radialGradient id="cg"><stop offset="0" stop-color="#7a4a12"/><stop offset="1" stop-color="#3b2208"/></radialGradient>
+  </defs>
+</svg>
+
+<canvas id="sky" aria-hidden="true"></canvas>
+
+<main>
+  <header class="hero">
+    <p class="para">Para <span data-para>mi amor</span></p>
+    <div class="hero-flower" data-flower></div>
+    <h1>Hoy me tocó llegar con las manos vacías</h1>
+    <p class="lead">Es 21 de septiembre, día de las flores amarillas, y tú mereces un ramo enorme, no me alcanzó para comprarlo, pero lo que sí tengo te lo sembré aquí</p>
+    <a class="btn" href="#jardin">Entrar a tu jardín</a>
+  </header>
+
+  <section id="jardin">
+    <h2>Tu jardín de flores amarillas</h2>
+    <p class="lead">Toca el jardín para sembrar las flores que quieras, todas son tuyas, y no hay límite de las que puedo regalarte aquí</p>
+    <div class="garden" id="garden" role="group" aria-label="Jardín: toca para sembrar flores amarillas">
+      <div class="ground"></div>
+    </div>
+    <p id="count" aria-live="polite">0 flores sembradas</p>
+    <p id="gmsg" aria-live="polite"></p>
+    <button class="btn ghost" id="plantBtn" type="button">Sembrar una flor</button>
+  </section>
+
+  <section id="carta">
+    <h2>Una carta para ti</h2>
+    <p class="lead">Escribí lo que no me salió decirte con flores</p>
+    <button class="btn" id="openLetter" type="button" aria-expanded="false" aria-controls="letter">Abrir la carta</button>
+    <div class="letter" id="letter">
+      <div class="paper">
+        <div class="paper-in">
+          <p>Mi amor,</p>
+          <p>Hoy es 21 de septiembre, el día de las flores amarillas, y quería llegar con un ramo enorme para ti, la verdad es que no me alcanzó, prefiero decirte las cosas como son a comprarte flores a medias con promesas que no puedo cumplir</p>
+          <p>Perdóname por no poder regalarte flores de verdad, te mereces todas: las de hoy y las de todos los días</p>
+          <p>Lo que sí tengo son ganas, ganas de trabajar, de crecer y de construir algo bonito contigo, el dinero va y viene, pero lo que siento por ti no se acaba</p>
+          <p>Si puedes seguir esperando por mí, te prometo que te voy a dar la vida que tanto deseas: paso a paso, con esfuerzo y con tu mano en la mía, y cuando llegue ese día, no te daré un ramo, te daré un jardín entero</p>
+          <p>Te amo mucho, por todo el universo y más</p>
+          <p class="firma">Con todo mi amor,<br><span data-de>Tu novio</span></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="universo">
+    <h2>Y no es solo por hoy</h2>
+    <div class="orbit" aria-hidden="true">
+      <div class="ring r3"><i></i></div>
+      <div class="ring r2"><i></i></div>
+      <div class="ring r1"><i></i></div>
+      <div class="sun" data-flower></div>
+    </div>
+    <p id="hasta" aria-live="polite">Te amo por todo el universo</p>
+    <button class="btn ghost" id="cuanto" type="button">¿Qué tanto?</button>
+  </section>
+
+  <section id="espera">
+    <h2>¿Me esperas un poquito más?</h2>
+    <p class="lead">Prometo que va a valer la pena</p>
+    <div class="answer" id="answer">
+      <button class="btn" id="yes" type="button">Sí, te espero</button>
+      <button class="btn ghost" id="no" type="button">Déjame pensarlo</button>
+    </div>
+    <div class="final" id="final" hidden>
+      <h2>Gracias, amor</h2>
+      <p class="lead">Ese sí vale más que todas las flores del mundo, te lo cumplo</p>
+      <div class="ticket">
+        <b>Vale por un jardín entero de flores amarillas</b>
+        <span>Canjeable cuando la vida me lo permita, que será más pronto de lo que crees</span>
+        <p class="firma"><span data-de>Tu novio</span></p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>Te amo, por todo el universo y más</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ============ CONFIGURACIÓN ============
+     Cambia estos dos textos con tu nombre y el apodo/nombre de ella.
+     También puedes usar la URL: tusitio.netlify.app/?para=Ana&de=Luis   */
+  var CONFIG = { para: "mi amor", de: "Tu novio" };
+  /* ======================================= */
+
+  function param(k, fallback) {
+    try {
+      var v = new URLSearchParams(location.search).get(k);
+      return v ? v.slice(0, 40) : fallback;
+    } catch (e) { return fallback; }
+  }
+  var PARA = param("para", CONFIG.para);
+  var DE = param("de", CONFIG.de);
+  document.querySelectorAll("[data-para]").forEach(function (el) { el.textContent = PARA; });
+  document.querySelectorAll("[data-de]").forEach(function (el) { el.textContent = DE; });
+
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---------- Flor en SVG ---------- */
+  function flowerSVG() {
+    var n = 13, back = "", front = "", seeds = "", i, a, k, r, ang;
+    for (i = 0; i < n; i++) {
+      a = (i * 360 / n).toFixed(2);
+      back += '<ellipse cx="50" cy="24" rx="9" ry="21" transform="rotate(' + a + ' 50 50)" fill="url(#pgDark)"/>';
+    }
+    for (i = 0; i < n; i++) {
+      a = (i * 360 / n + 360 / n / 2).toFixed(2);
+      front += '<ellipse cx="50" cy="27" rx="8.5" ry="19" transform="rotate(' + a + ' 50 50)" fill="url(#pg)"/>';
+    }
+    for (k = 1; k < 34; k++) {
+      r = 2.4 * Math.sqrt(k); ang = k * 137.5 * Math.PI / 180;
+      seeds += '<circle cx="' + (50 + r * Math.cos(ang)).toFixed(2) + '" cy="' + (50 + r * Math.sin(ang)).toFixed(2) + '" r="1.1" fill="#f2b84b" opacity=".75"/>';
+    }
+    return '<svg viewBox="0 0 100 100" aria-hidden="true" focusable="false">' + back + front +
+           '<circle cx="50" cy="50" r="15.5" fill="url(#cg)"/>' + seeds + '</svg>';
+  }
+  document.querySelectorAll("[data-flower]").forEach(function (el) { el.innerHTML = flowerSVG(); });
+
+  /* ---------- Cielo: estrellas + pétalos ---------- */
+  var cv = document.getElementById("sky"), ctx = cv.getContext("2d");
+  var W = 0, H = 0, stars = [], petals = [];
+  var COLORS = ["#ffd23f", "#ffc72c", "#ffe680", "#ffb703", "#fff0a8"];
+  var K = reduce ? 0.35 : 1;
+
+  function rnd(a, b) { return a + Math.random() * (b - a); }
+
+  function resize() {
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = window.innerWidth; H = window.innerHeight;
+    cv.width = W * dpr; cv.height = H * dpr;
+    cv.style.width = W + "px"; cv.style.height = H + "px";
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  function initStars() {
+    stars = [];
+    for (var i = 0; i < 130; i++) stars.push({ x: Math.random(), y: Math.random(), r: rnd(.4, 1.5), ph: rnd(0, 6.28), sp: rnd(.5, 1.6) });
+  }
+  function newPetal(anywhere) {
+    return { x: rnd(0, W), y: anywhere ? rnd(-20, H) : -20, s: rnd(5, 11), r: rnd(0, 6.28), vr: rnd(-.03, .03),
+             vy: rnd(.35, 1.1), sw: rnd(0, 6.28), swa: rnd(.4, 1.3), c: COLORS[(Math.random() * COLORS.length) | 0], burst: false };
+  }
+  function initPetals() {
+    petals = [];
+    var n = reduce ? 12 : 40;
+    for (var i = 0; i < n; i++) petals.push(newPetal(true));
+  }
+  function burst(x, y) {
+    for (var i = 0; i < 90; i++) {
+      var ang = rnd(0, 6.283), sp = rnd(2, 8);
+      petals.push({ x: x, y: y, s: rnd(6, 13), r: rnd(0, 6.28), vr: rnd(-.15, .15),
+                    vx: Math.cos(ang) * sp, vy: Math.sin(ang) * sp - 3, life: 1,
+                    c: COLORS[(Math.random() * COLORS.length) | 0], burst: true });
+    }
+  }
+  function drawPetal(p, alpha) {
+    ctx.save();
+    ctx.globalAlpha = alpha;
+    ctx.translate(p.x, p.y); ctx.rotate(p.r);
+    ctx.fillStyle = p.c;
+    ctx.beginPath(); ctx.ellipse(0, 0, p.s * .5, p.s, 0, 0, 6.283); ctx.fill();
+    ctx.restore();
+  }
+  function frame(t) {
+    ctx.clearRect(0, 0, W, H);
+    var i, s, p;
+    ctx.fillStyle = "#fff6d0";
+    for (i = 0; i < stars.length; i++) {
+      s = stars[i];
+      ctx.globalAlpha = .3 + .7 * (.5 + .5 * Math.sin(t * .0012 * s.sp + s.ph));
+      ctx.beginPath(); ctx.arc(s.x * W, s.y * H, s.r, 0, 6.283); ctx.fill();
+    }
+    for (i = petals.length - 1; i >= 0; i--) {
+      p = petals[i];
+      if (p.burst) {
+        p.vx *= .985; p.vy += .12; p.x += p.vx; p.y += p.vy; p.r += p.vr; p.life -= .009;
+        if (p.life <= 0) { petals.splice(i, 1); continue; }
+        drawPetal(p, Math.max(p.life, 0));
+      } else {
+        p.sw += .02; p.x += Math.sin(p.sw) * p.swa * .5 * K; p.y += p.vy * K; p.r += p.vr * K;
+        if (p.y > H + 20) petals[i] = newPetal(false);
+        drawPetal(p, .85);
+      }
+    }
+    ctx.globalAlpha = 1;
+    requestAnimationFrame(frame);
+  }
+  resize(); initStars(); initPetals();
+  window.addEventListener("resize", resize);
+  requestAnimationFrame(frame);
+
+  /* ---------- Jardín ---------- */
+  var garden = document.getElementById("garden");
+  var countEl = document.getElementById("count");
+  var msgEl = document.getElementById("gmsg");
+  var MAX = 70, total = 0, saved = [];
+  var KEY = "jardin-flores-v1", KEY2 = "jardin-respuesta-v1";
+
+  // ?reset=1 en la URL borra lo guardado (útil para tus pruebas)
+  try {
+    if (new URLSearchParams(location.search).get("reset") === "1") {
+      localStorage.removeItem(KEY); localStorage.removeItem(KEY2);
+    }
+  } catch (e) {}
+
+  function loadSaved() {
+    try {
+      var v = JSON.parse(localStorage.getItem(KEY));
+      if (!Array.isArray(v)) return [];
+      return v.filter(function (f) {
+        return f && isFinite(f.x) && isFinite(f.y) && isFinite(f.s) && f.x >= 0 && f.x <= 1 && f.y >= 0 && f.y <= 1;
+      }).slice(0, MAX);
+    } catch (e) { return []; }
+  }
+  function persist() {
+    try { localStorage.setItem(KEY, JSON.stringify(saved)); } catch (e) {}
+  }
+  saved = loadSaved();
+  var MILESTONES = {
+    1: "Esa es la primera, y va con todo mi cariño",
+    6: "Ya empezó a florecer, esto apenas comienza",
+    12: "Sigue, que tengo muchas más para ti",
+    20: "Así, un jardín entero, como el que te prometo",
+    35: "Ya me pasé, pero para ti nunca son suficientes",
+    55: "Se llenó el jardín, igual que tú me llenas la vida"
+  };
+
+  function plant(x, y, opts) {
+    opts = opts || {};
+    if (total >= MAX) { msgEl.textContent = "El jardín ya está lleno, lo demás te lo debo para el jardín de verdad"; return; }
+    var gh = garden.clientHeight, gw = garden.clientWidth;
+    x = Math.max(24, Math.min(gw - 24, x));
+    y = Math.max(40, Math.min(gh - 95, y));
+    var size = opts.size || (46 + Math.random() * 46);
+    var p = document.createElement("div");
+    p.className = "plant";
+    p.style.left = x + "px";
+    p.style.height = (gh - y) + "px";
+    p.style.animationDelay = (-Math.random() * 4) + "s";
+    p.style.animationDuration = (3.8 + Math.random() * 2) + "s";
+    p.innerHTML = '<div class="stem"></div><div class="bloom" style="width:' + size + "px;height:" + size +
+                  "px;margin:" + (-size / 2) + "px 0 0 " + (-size / 2) + 'px">' + flowerSVG() + "</div>";
+    garden.appendChild(p);
+    total++;
+    countEl.textContent = total + (total === 1 ? " flor sembrada" : " flores sembradas");
+    if (!opts.restore) {
+      if (MILESTONES[total]) msgEl.textContent = MILESTONES[total];
+      saved.push({ x: +(x / gw).toFixed(4), y: +(y / gh).toFixed(4), s: Math.round(size) });
+      persist();
+    }
+  }
+  garden.addEventListener("click", function (e) {
+    var r = garden.getBoundingClientRect();
+    plant(e.clientX - r.left, e.clientY - r.top);
+  });
+  document.getElementById("plantBtn").addEventListener("click", function () {
+    var gh = garden.clientHeight, gw = garden.clientWidth;
+    plant(rnd(30, gw - 30), rnd(gh * .2, gh * .65));
+  });
+
+  // Al llegar al jardín se siembran las primeras flores solas
+  var seeded = false;
+  function seedFirst() {
+    if (seeded) return; seeded = true;
+    if (saved.length) {
+      var gap = Math.min(110, 2200 / saved.length);
+      saved.slice().forEach(function (f, i) {
+        setTimeout(function () {
+          plant(f.x * garden.clientWidth, f.y * garden.clientHeight, { restore: true, size: f.s });
+        }, i * gap);
+      });
+      msgEl.textContent = "Aquí siguen las flores que sembraste, te estaban esperando";
+      return;
+    }
+    var xs = [.10, .26, .42, .58, .74, .90];
+    xs.forEach(function (f, i) {
+      setTimeout(function () { plant(garden.clientWidth * f, rnd(garden.clientHeight * .25, garden.clientHeight * .6)); }, i * 260);
+    });
+  }
+  if ("IntersectionObserver" in window) {
+    new IntersectionObserver(function (entries, obs) {
+      if (entries[0].isIntersecting) { seedFirst(); obs.disconnect(); }
+    }, { threshold: .35 }).observe(garden);
+  } else { seedFirst(); }
+
+  /* ---------- Carta ---------- */
+  var letter = document.getElementById("letter");
+  var openBtn = document.getElementById("openLetter");
+  openBtn.addEventListener("click", function () {
+    var open = letter.classList.toggle("open");
+    openBtn.setAttribute("aria-expanded", open ? "true" : "false");
+    openBtn.textContent = open ? "Cerrar la carta" : "Abrir la carta";
+    if (open) setTimeout(function () { letter.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" }); }, 250);
+  });
+
+  /* ---------- Universo ---------- */
+  var FRASES = [
+    "Hasta la Luna, ida y vuelta",
+    "Hasta la estrella más lejana que se ve desde tu ventana",
+    "Hasta el borde del universo",
+    "Y de ahí, otro tanto más"
+  ];
+  var fi = 0, hasta = document.getElementById("hasta"), cuanto = document.getElementById("cuanto");
+  cuanto.addEventListener("click", function () {
+    hasta.textContent = FRASES[fi % FRASES.length];
+    hasta.classList.remove("cambia"); void hasta.offsetWidth; hasta.classList.add("cambia");
+    fi++;
+    cuanto.textContent = "¿Y qué tanto más?";
+  });
+
+  /* ---------- Pregunta ---------- */
+  var yes = document.getElementById("yes"), no = document.getElementById("no");
+  var answer = document.getElementById("answer"), fin = document.getElementById("final");
+  var dodges = 0, TEXTOS = { 1: "¿Segura?", 3: "Piénsalo bien", 5: "Ya dime que sí" };
+
+  function dodge() {
+    dodges++;
+    var box = answer.getBoundingClientRect();
+    var maxX = Math.max(30, Math.min(140, box.width / 2 - 60));
+    no.style.transform = "translate(" + rnd(-maxX, maxX).toFixed(0) + "px," + rnd(-55, 55).toFixed(0) + "px)";
+    if (TEXTOS[dodges]) no.textContent = TEXTOS[dodges];
+  }
+  no.addEventListener("pointerenter", dodge);
+  no.addEventListener("click", function (e) { e.preventDefault(); dodge(); });
+
+  yes.addEventListener("click", function () {
+    try { localStorage.setItem(KEY2, "1"); } catch (e) {}
+    var r = yes.getBoundingClientRect();
+    var cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+    burst(cx, cy);
+    setTimeout(function () { burst(W * .25, H * .5); }, 350);
+    setTimeout(function () { burst(W * .75, H * .5); }, 700);
+    answer.hidden = true;
+    fin.hidden = false;
+    setTimeout(function () { fin.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "center" }); }, 200);
+  });
+  try {
+    if (localStorage.getItem(KEY2) === "1") { answer.hidden = true; fin.hidden = false; }
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>
